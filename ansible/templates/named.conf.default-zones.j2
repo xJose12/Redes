@@ -1,0 +1,80 @@
+// Consider adding the 1918 zones here, if they are not used in your organization
+// include "/etc/bind/zones.rfc1918";
+
+key "my-key" {
+        algorithm hmac-sha256;
+        secret "lsrelgYjTx4oR4ufrsicRTAWwyfYRTL6RTUKaZCOF+o=";
+};
+
+view "private" {
+    match-clients { localhost; 192.168.29.0/24; };
+    zone "empresa29.asix" {
+        type master;
+        file "/etc/bind/db.empresa29.asix.private";
+    };
+    zone "alumnes.empresa29.asix" {
+        type master;
+        file "/etc/bind/db.empresa29.asix.private";
+        allow-transfer { 192.168.29.1; };
+    };
+    zone "asix29.local" {
+        type master;
+        file "/etc/bind/db.asix29.local.directa";
+    };
+    zone "29.168.192.in-addr.arpa" {
+        type master;
+        file "/etc/bind/db.asix29.local.inversa";
+    };
+    zone "daw29.com" {
+        type master;
+        file "/etc/bind/db.daw29.com.private";
+        allow-update { key my-key; 192.168.29.0/24; };
+        allow-transfer { 192.168.29.1; };
+    };
+    zone "29pagina1.com" {
+        type master;
+        file "/etc/bind/db.29pagina1.com.private";
+    };
+    zone "29pagina2.com" {
+        type master;
+        file "/etc/bind/db.29pagina2.com.private";
+    };
+    zone "troncal.net" {
+        type forward;
+        forwarders { 172.16.0.12; };
+    };
+    zone "." {
+        type hint;
+        file "/usr/share/dns/root.hints";
+    };
+};
+
+view "public" {
+    match-clients { any; };
+    zone "empresa29.asix" {
+        type master;
+        file "/etc/bind/db.empresa29.asix.public";
+    };
+    zone "daw29.com" {
+        type master;
+        file "/etc/bind/db.daw29.com.public";
+        allow-update { key my-key; };
+        allow-transfer { 192.168.29.1; };
+    };
+    zone "29pagina1.com" {
+        type master;
+        file "/etc/bind/db.29pagina1.com.public";
+    };
+    zone "29pagina2.com" {
+        type master;
+        file "/etc/bind/db.29pagina2.com.public";
+    };
+    zone "troncal.net" {
+        type forward;
+        forwarders { 172.16.0.12; };
+    };
+    zone "." {
+        type hint;
+        file "/usr/share/dns/root.hints";
+    };
+};

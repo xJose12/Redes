@@ -1,0 +1,26 @@
+;
+; Zona privada para www.empresaX.asix
+;
+
+$TTL    604800
+@       IN      SOA     ns.empresa29.asix. root.empresa29.asix. (
+                    2         ; Número de serie
+                    604800    ; Tiempo de refresco (1 semana)
+                    86400     ; Tiempo de reintento (1 día)
+                    2419200   ; Tiempo de expiración (4 semanas)
+                    604800 )  ; TTL negativo (1 semana)
+
+$ORIGIN empresa29.asix.
+@	IN	NS	ns.empresa29.asix.
+@	IN	A	192.168.29.3
+@	IN	MX	10	mail.empresa29.asix.
+ns	IN	A	192.168.29.3
+www	IN	A	192.168.29.3
+mail	IN	A	192.168.29.3
+
+$ORIGIN alumnes.empresa29.asix.
+@	IN	NS	ns.rt29.asix.
+ns.rt29.asix.	IN	A	192.168.29.1
+@       IN      A       192.168.29.1
+joan	IN	A	192.168.29.89
+maria	IN	A	192.168.29.69

@@ -1,0 +1,28 @@
+$ORIGIN .
+$TTL 604800	; 1 week
+daw29.com		IN SOA	ns.daw29.com. root.daw29.com. (
+				19         ; serial
+				604800     ; refresh (1 week)
+				86400      ; retry (1 day)
+				2419200    ; expire (4 weeks)
+				604800     ; minimum (1 week)
+				)
+			NS	ns.daw29.com.
+			A	192.168.29.3
+			mx	10	mail.daw29.com.
+			AAAA	::1
+$ORIGIN daw29.com.
+$TTL 3600	; 1 hour
+ana			A	192.168.29.3
+jose			A	192.168.29.6
+$TTL 604800	; 1 week
+ns			A	192.168.29.3
+$TTL 3600	; 1 hour
+paquito			A	192.168.29.120
+$TTL 604800	; 1 week
+prueba			A	192.168.29.3
+$TTL 3600	; 1 hour
+toni			A	192.168.29.144
+$TTL 604800	; 1 week
+www			A	192.168.29.3
+mail			A	192.168.29.100

@@ -1,0 +1,15 @@
+;
+; Zona pública para www.empresaX.asix
+;
+$TTL    604800
+@       IN      SOA     ns.empresa29.asix. root.empresa29.asix. (
+                    2         ; Número de serie
+                    604800    ; Tiempo de refresco (1 semana)
+                    86400     ; Tiempo de reintento (1 día)
+                    2419200   ; Tiempo de expiración (4 semanas)
+                    604800 )  ; TTL negativo (1 semana)
+
+@       IN      NS      ns.empresa29.asix.
+@       IN      A       172.16.0.29
+ns	IN	A	172.16.0.29
+www	IN	A       172.16.0.29

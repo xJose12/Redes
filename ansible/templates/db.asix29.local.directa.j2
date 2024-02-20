@@ -1,0 +1,21 @@
+;
+; BIND data file for asix29.local
+;
+$TTL    604800
+@       IN      SOA     ns.asix29.local. root.asix29.local. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      ns.asix29.local.
+@       IN      A       192.168.29.3
+@       IN      AAAA    ::1
+ns      IN      A       192.168.29.3
+svr     IN      A       192.168.29.3
+rt      IN      A       192.168.29.1
+cli     IN      A       192.168.29.100
+www     IN      A       192.168.29.3
+server  IN      CNAME   svr
+router  IN      CNAME   rt

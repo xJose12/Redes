@@ -1,0 +1,95 @@
+---
+
+# Instalar y configurar dns
+
+- hosts: all
+  remote_user: "root"
+  tasks:
+
+  - name: Actualizar repositorios
+    apt:
+      update_cache: yes
+
+#  - name: Actualizar Sistema
+#    apt:
+#      name: "*"
+#      state: latest
+
+  - name: Instalar paquete bind9
+    apt:
+      name: bind9
+      state: present
+
+  - name: Iniciar servicio DNS
+    systemd:
+      name: bind9
+      state: started
+      enabled: yes
+
+  - name: Copiar plantilla configuracion db.asix29.local.directa
+    copy:
+      src: templates/db.asix29.local.directa.j2
+      dest: /etc/bind/db.asix29.local.directa
+
+  - name: Copiar plantilla configuracion db.asix29.local.inversa
+    copy:
+      src: templates/db.asix29.local.inversa.j2
+      dest: /etc/bind/db.asix29.local.inversa
+      notify: Restart DNS
+
+  - name: Ejecuta nslookup para comprobar asix29.local
+    shell: "nslookup asix29.local 192.168.29.3"
+    register: resultado_nslookup
+
+  - name: Mostrar resultado nslookup
+    debug:
+      msg: "{{resultado_nslookup}}"
+
+  - name: Ping a google.com
+    command: ping 8.8.8.8 -c 1
+    register: ping_result
+    ignore_errors: true
+
+  - name: Imprime un mensaje si funciona el ping
+    debug:
+      msg: "Ping Funciona!"
+    when: ping_result.rc == 0
+
+  - name: Copiar plantilla configuracion db.empresa29.asix.private
+    copy:
+      src: templates/db.empresa29.asix.private.j2
+      dest: /etc/bind/db.empresa29.asix.private
+
+  - name: Copiar plantilla configuracion db.empresa29.asix.public
+    copy:
+      src: templates/db.empresa29.asix.public.j2
+      dest: /etc/bind/db.empresa29.asix.public
+      notify: Restart DNS
+
+  - name: Copiar plantilla configuracion db.daw29.com.private
+    copy:
+      src: templates/db.daw29.com.private.j2
+      dest: /etc/bind/db.daw29.com.private
+
+  - name: Copiar plantilla configuracion db.daw29.com.public
+    copy:
+      src: templates/db.daw29.com.public.j2
+      dest: /etc/bind/db.daw29.com.public
+      notify: Restart DNS
+
+  - name: Copiar plantilla configuracion named.conf.options
+    copy:
+      src: templates/named.conf.options.j2
+      dest: /etc/bind/named.conf.options
+
+  - name: Copiar plantilla todas las zonas
+    copy:
+      src: templates/named.conf.default-zones.j2
+      dest: /etc/bind/named.conf.default-zones
+      notify: Restart DNS
+
+  handlers:
+    - name: Restart DNS
+      service:
+        name: bind9
+        state: restarted

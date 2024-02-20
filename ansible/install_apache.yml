@@ -1,0 +1,75 @@
+---
+- name: Configurar Servidor Web y MySQL
+  hosts: all
+
+  tasks:
+    - name: Instalar servidor Apache
+      apt:
+        name: apache2
+        state: present
+
+    - name: Iniciar Apache
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+
+    - name: Acceder a la pagina por defecto
+      uri:
+        url: http://192.168.29.3
+      register: result_default_page
+
+    - name: Crear y acceder a una pagina HTML de prueba
+      copy:
+        content: "<html><body><h1>BENVINGUT A ASIX</h1></body></html>"
+        dest: /var/www/html/prova.html
+      notify: Restart Apache
+
+    - name: Instalar PHP y modulo PHP para Apache
+      apt:
+        pkg:
+        - php
+        - libapache2-mod-php
+        state: present
+
+    - name: Crear y acceder a una pagina PHP de prueba
+      copy:
+        content: "<?php echo 'HOLA ' . $_GET['nom']; ?>"
+        dest: /var/www/html/hola.php
+      notify: Restart Apache
+
+    - name: Instalar MySQL y PHP MySQL driver
+      apt:
+        pkg:
+        - default-mysql-server
+        - php-mysql
+        state: present
+
+    - name: Instalar modulo de MySQL para Python
+      apt:
+        name: python3-mysqldb
+        state: present
+
+    - name: Copiar archivo SQL
+      copy:
+        src: sql/instalacionbasica.sql
+        dest: instalacionbasica.sql
+
+    - name: Ejecutar script SQL
+      shell: mysql -u {{ mysql_user }} -p{{ mysql_password }} < instalacionbasica.sql
+
+    - name: Crear script PHP llista.php
+      copy:
+        src: /home/ansible/htmlphp/llista.php
+        dest: /var/www/html/llista.php
+      notify: Restart Apache
+
+  handlers:
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted
+
+  vars:
+    mysql_user: "root"
+    mysql_password: "password"
