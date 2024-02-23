@@ -30,6 +30,9 @@
     copy:
       src: templates/db.asix29.local.directa.j2
       dest: /etc/bind/db.asix29.local.directa
+      owner: root
+      group: root
+      mode: 0644
 
   - name: Copiar plantilla configuracion db.asix29.local.inversa
     copy:
@@ -81,12 +84,31 @@
     copy:
       src: templates/named.conf.options.j2
       dest: /etc/bind/named.conf.options
+      force: no # se utiliza para no sobreescribir, utilizado por ejemplo para las zonas
 
   - name: Copiar plantilla todas las zonas
     copy:
       src: templates/named.conf.default-zones.j2
       dest: /etc/bind/named.conf.default-zones
       notify: Restart DNS
+
+  - name: editar archivos
+    lineinfile:
+      path: /etc/bind/named.conf.options
+      search_string: 'variable='
+      insertbefore: '# aqui van las opciones'
+      line: 'variable=33'
+
+      backrefs: yes
+      regexp: 'mydestinations=(.*)'
+      line: 'mydestinations=\1 www.midomain.com'
+      notify: Restart DNS
+
+
+  - name: copiar plantilla
+    template:
+      src: templates/named.conf.j2
+      dest: /etc/bind/named.conf
 
   handlers:
     - name: Restart DNS

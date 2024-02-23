@@ -3,7 +3,15 @@
 - name: Configurar Servidor Web y MySQL
   hosts: all
 
+  vars:
+    mysql_user: "root"
+    mysql_password: "password"
+
   tasks:
+    - name: cambiar de nombre
+    hostname:
+      name: "{{ nom }}"
+
     - name: Instalar servidor Apache
       apt:
         name: apache2
@@ -12,8 +20,7 @@
     - name: Iniciar Apache
       service:
         name: apache2
-        state: started
-        enabled: yes
+        state: present
 
     - name: Acceder a la pagina por defecto
       uri:
@@ -28,9 +35,12 @@
 
     - name: Instalar PHP y modulo PHP para Apache
       apt:
-        pkg:
+       name: '{{ item }}'
+      loop:
+        - apache2
         - php
         - libapache2-mod-php
+        - php-mysql
         state: present
 
     - name: Crear y acceder a una pagina PHP de prueba
@@ -39,12 +49,11 @@
         dest: /var/www/html/hola.php
       notify: Restart Apache
 
-    - name: Instalar MySQL y PHP MySQL driver
-      apt:
-        pkg:
-        - default-mysql-server
-        - php-mysql
-        state: present
+#    - name: Instalar MySQL y PHP MySQL driver
+#      apt:
+#        loop:
+#        - default-mysql-server
+#        state: present
 
     - name: Instalar modulo de MySQL para Python
       apt:
@@ -70,7 +79,3 @@
       service:
         name: apache2
         state: restarted
-
-  vars:
-    mysql_user: "root"
-    mysql_password: "password"
