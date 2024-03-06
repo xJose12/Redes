@@ -1,0 +1,24 @@
+---
+# Instalacion de Bind
+
+- name: Configurar Bind para el servidor
+  hosts: DNSSERVERS
+
+  tasks:
+    - name: Cambiar de nombre
+      hostname:
+        name: "{{ nom }}"
+
+    - name: Actualizar repositorios
+      apt:
+        update_cache: yes
+
+    - name: Instalar Paquete Bind
+      apt:
+        name: bind9
+        state: present
+
+    - name: Editar named.conf.local, agregar zonas por defecto
+      lineinfile:
+        path: /etc/bind/named.conf.local
+        line: include "/etc/bind/named.conf.default-zones";

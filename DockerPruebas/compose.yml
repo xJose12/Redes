@@ -1,0 +1,26 @@
+services:
+  apache:
+    build:
+      context: .
+      dockerfile: dockerfile
+    image: php:apache
+    ports:
+      - 80:80
+    volumes:
+      - .:/var/www/html
+  db:
+    image: mariadb
+    environment:
+      - MARIADB_ROOT_PASSWORD=secret
+    ports:
+      - 3307:3306
+    volumes:
+      - mariadb_proves:/var/lib/mysql 
+  phpmyadmin:
+    image: phpmyadmin
+    environment:
+      - PMA_HOST=db
+    ports:
+      - 81:80
+volumes:
+  mariadb_proves:

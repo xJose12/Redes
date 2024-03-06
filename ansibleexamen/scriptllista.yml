@@ -1,0 +1,21 @@
+---
+
+- hosts: WEBSERVERS
+
+  tasks:
+  - name: Copiar archivo SQL
+    copy:
+      src: sql/instalacionbasica.sql
+      dest: instalacionbasica.sql
+
+#  - name: Ejecutar SQL
+#    shell: mysql -u {{ user }} -p {{ password }} < instalacionbasica.sql
+
+  - name: Ejecutar SQL
+    mysql_db:
+      login_host: 192.168.29.3
+      login_user: "{{ user }}"
+      login_password: "{{ password }}"
+      name: mydatabase
+      state: import
+      target: instalacionbasica.sql

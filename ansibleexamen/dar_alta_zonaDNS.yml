@@ -1,0 +1,27 @@
+---
+# Dar alta zona DNS
+
+- name: Dar alta zona DNS
+  hosts: DNSSERVERS
+
+  tasks:
+  - name: Copiar archivo configuracion de la zona
+    template:
+      src: templates/db.default.j2
+      dest: /etc/bind/db.{{ dominio }}
+      backup: yes
+
+  - name: Agrega nueva zona a named.conf.local
+    blockinfile:
+      path: /etc/bind/named.conf.local
+      marker: "# {mark} ANSIBLE MANAGED BLOCK {{ dominio }}"
+      block: |
+        zone "{{ dominio }}" {
+          type master;
+          file "/etc/bind/db.{{ dominio }}";
+        };
+
+  - name: Reiniciar DNS
+    service:
+      name: bind9
+      state: restarted

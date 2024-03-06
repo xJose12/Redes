@@ -1,0 +1,31 @@
+---
+# Instalacion de Bind
+
+- name: Configurar Apache para el servidor
+  hosts: WEBSERVERS
+
+  tasks:
+    - name: Cambiar de nombre
+      hostname:
+        name: "{{ nom }}"
+
+    - name: Actualizar repositorios
+      apt:
+        update_cache: yes
+
+#    - name: Instalar Paquete Apache
+#      apt:
+#        name: apache2
+#        state: present
+
+    - name: Instalar Apache, PHP y modulo PHP para Apache
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - apache2
+        - php
+        - libapache2-mod-php
+        - php-mysql
+        - mariadb-server
+        - python3-mysqldb

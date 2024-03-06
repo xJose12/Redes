@@ -1,0 +1,29 @@
+---
+# Dar alta pagina HTML
+
+- hosts: WEBSERVERS
+
+  tasks:
+
+  - name: Crear pagina
+    template:
+      src: templates/000-default.conf.j2
+      dest: /etc/apache2/sites-available/{{ servername }}.conf
+
+  - name: Crear directory para html
+    file:
+      path: /var/www/html/{{ servername }}
+      state: directory
+
+  - name: Contenido pagina
+    copy:
+      content: "<html><body><h1>BENVINGUT A ASIX</h1></body></html>"
+      dest: /var/www/html/{{ servername }}/index.html
+
+  - name: Reiniciar Apache
+    service:
+      name: apache2
+      state: restarted
+
+  - name: Habilitamos la pagina {{ servername }}
+    shell: "a2ensite {{ servername }}.conf"

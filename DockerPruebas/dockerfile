@@ -1,0 +1,7 @@
+FROM php:apache
+COPY index.html /var/www/html
+COPY default.conf /etc/apache2/sites-available/hola.conf
+RUN a2ensite hola.conf
+RUN service restart apache
+RUN apt-get install -y curl
+RUN apt-get install php-mysql
