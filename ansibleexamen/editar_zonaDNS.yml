@@ -1,0 +1,15 @@
+---
+
+# Editar zona DNS
+
+- hosts: DNSSERVERS
+
+  tasks:
+  - name: Editar {{ dominio }}
+    lineinfile:
+      path: /etc/bind/db.{{ dominio }}
+      line: 'svr  IN  A  192.168.29.3'
+
+  - name: Reiniciar bind
+    service:
+      name: bind9

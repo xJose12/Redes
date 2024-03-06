@@ -1,0 +1,13 @@
+---
+
+# Editar un archivo
+
+- hosts: DNSSERVERS
+
+  tasks:
+  - name: Editar el resolv.conf
+    lineinfile:
+      path: /etc/resolv.conf
+      search_string: 'nameserver'
+      insertbefore: '# Controlado por ansible'
+      line: 'nameserver 192.168.29.2'
