@@ -9,6 +9,10 @@ services:
       - 80:80
     volumes:
       - .:/var/www/html
+  apache2:
+    image: php:apache
+    ports:
+      - 82:80
   db:
     image: mariadb
     environment:

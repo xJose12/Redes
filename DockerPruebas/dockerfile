@@ -1,7 +1,7 @@
 # dockerfile
 FROM php:7.4-apache
-RUN apt update
-RUN apt upgrade
+#RUN apt update
+#RUN apt upgrade -y
 COPY pagina/index.html /var/www/html
 COPY default.conf /etc/apache2/sites-available/hola.conf
 RUN a2ensite hola.conf
