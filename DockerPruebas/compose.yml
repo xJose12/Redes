@@ -1,9 +1,10 @@
+# compose.yml
+version: '3'
 services:
   apache:
     build:
       context: .
       dockerfile: dockerfile
-    image: php:apache
     ports:
       - 80:80
     volumes:
@@ -11,7 +12,8 @@ services:
   db:
     image: mariadb
     environment:
-      - MARIADB_ROOT_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=misdatos
     ports:
       - 3307:3306
     volumes:
