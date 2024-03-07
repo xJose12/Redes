@@ -1,0 +1,5 @@
+# Utilizamos la imagen base de Apache
+FROM apache:latest
+
+# Instalamos los módulos necesarios para actuar como proxy
+RUN a2enmod proxy proxy_http proxy_balancer lbmethod_byrequests
