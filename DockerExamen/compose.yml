@@ -12,18 +12,18 @@ services:
       mired:
         ipv4_address: 10.100.75.29
 
-  apachedaw:
-    build:
-      context: .
-      dockerfile: asix/dockerfile
-    ports:
-      - "82:80"
-      - "445:443"
-    volumes:
-      - ./daw/src/:/var/www/html
-    networks:
-      mired:
-        ipv4_address: 10.100.75.29
+  # apachedaw:
+  #   build:
+  #     context: .
+  #     dockerfile: asix/dockerfile
+  #   ports:
+  #     - "82:80"
+  #     - "445:443"
+  #   volumes:
+  #     - ./daw/src/:/var/www/html
+  #   networks:
+  #     mired:
+  #       ipv4_address: 10.100.75.29
 
   # apache-proxy:
   #   build:
