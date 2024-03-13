@@ -1,4 +1,3 @@
-# compose.yml
 version: '3'
 services:
   apache:
@@ -6,13 +5,11 @@ services:
       context: .
       dockerfile: dockerfile
     ports:
-      - 80:80
+      - 81:80
     volumes:
-      - .:/var/www/html
-  apache2:
-    image: php:apache
-    ports:
-      - 82:80
+      - ./pagina/:/var/www/html
+    networks:
+      - mired
   db:
     image: mariadb
     environment:
@@ -21,12 +18,22 @@ services:
     ports:
       - 3307:3306
     volumes:
-      - mariadb_proves:/var/lib/mysql 
+      - mariadb_examen:/var/lib/mysql
+    networks:
+      - mired
+
   phpmyadmin:
     image: phpmyadmin
     environment:
       - PMA_HOST=db
     ports:
-      - 81:80
+      - 83:80
+    networks:
+      - mired
+
+networks:
+  mired:
+   driver: bridge
+
 volumes:
-  mariadb_proves:
+  mariadb_examen:

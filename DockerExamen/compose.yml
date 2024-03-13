@@ -9,40 +9,26 @@ services:
     volumes:
       - ./asix/src/:/var/www/html
     networks:
-      mired:
-        ipv4_address: 10.100.75.29
+      - mired
+#        ipv4_address: 192.168.10.3
 
-  # apachedaw:
-  #   build:
-  #     context: .
-  #     dockerfile: asix/dockerfile
-  #   ports:
-  #     - "82:80"
-  #     - "445:443"
-  #   volumes:
-  #     - ./daw/src/:/var/www/html
-  #   networks:
-  #     mired:
-  #       ipv4_address: 10.100.75.29
-
-  # apache-proxy:
-  #   build:
-  #     context: .
-  #     dockerfile: gateway/Dockerfile
-  #   ports:
-  #     - "80:80"
-  #   volumes:
-  #     - ./apache_proxy/apache.conf:/etc/apache2/apache.conf
-  #   depends_on:
-  #     - apacheasix
-  #     - apachedaw
-  #   networks:
-  #     - mired
+  apachedaw:
+    build:
+      context: .
+      dockerfile: daw/dockerfile
+    ports:
+      - "82:80"
+      - "445:443"
+    volumes:
+      - ./daw/src/:/var/www/html
+    networks:
+      - mired
+#        ipv4_address: 192.168.10.3
 
 networks:
   mired:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 10.100.75.0/24
-          gateway: 10.100.75.1
+#    ipam:
+#      config:
+#        - subnet: 192.168.10.0/24
+#          gateway: 192.168.10.1
